@@ -5,6 +5,7 @@ var textEditor = new (function () {
 
     loadIcons();
 
+
     var el = 0;
 
     var textElements = [
@@ -63,11 +64,11 @@ var textEditor = new (function () {
 
     ];
 
-    var buttonElements = [
-      {
-        command: 'save', type: 'button', innerHTML: '<i class="fas fa-save"></i>'
-      }
-    ];
+    var buttonElements = [{
+      command: 'save', type: 'button', innerHTML: '<i class="fas fa-save"></i>'
+    }];
+
+    document.getElementById('code').style.display = 'none';
 
     var headLine = document.createElement('div');
     headLine.setAttribute('id', 'headLine');
@@ -83,6 +84,14 @@ var textEditor = new (function () {
     // textContainer.style.height = '50%';
     textContainer.style.margin = '0 15%';
     textContainer.appendChildAfter(headLine);
+
+    var codeContainer = document.createElement('div');
+    codeContainer.setAttribute('id', 'codeContainer');
+
+    codeContainer.style.width = '45%';
+    // textContainer.style.height = '50%';
+    codeContainer.style.margin = '0 15%';
+    codeContainer.appendChildAfter(headLine);
 
     var textIframeEditable = document.createElement('iframe');
     textIframeEditable.setAttribute('id', 'textIframe');
@@ -104,8 +113,27 @@ var textEditor = new (function () {
     input.style.margin = '5px 0';
     saveContainer.appendChild(input);
 
+    var codeButton = document.createElement('button');
+    codeButton.setAttribute('id', codeButton);
+    codeButton.innerHTML = ' CodeEditor'
+    codeButton.appendChildAfter(saveContainer);
+
+    var codeTag = document.createElement('code');
+    codeTag.setAttribute('id', 'codeTag');
+    codeTag.innerHTML = '&lt;script&gt';
+    codeContainer.appendChild(codeTag);
+
     document.getElementById(args.selector).style.display = 'none';
+    codeContainer.style.display = 'none';
     textIframeEditable.contentDocument.designMode = 'on';
+
+    codeButton.addEventListener('click', function () {
+      textContainer.style.display = 'none';
+      codeContainer.style.display = 'block';
+      // syntaxHighlight();
+    })
+
+
 
     //upload file in dom
     inputFile.onchange = function () {
@@ -246,6 +274,8 @@ var textEditor = new (function () {
 
             if ((commandValue !== null && isPromptDisplay) || !isPromptDisplay) {
               textIframe.document.execCommand(textCommand, false, commandValue);
+              // console.log(textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent);
+
 
             }
           }
@@ -270,11 +300,13 @@ var textEditor = new (function () {
           textCommand = this.getAttribute('title');
           textIframe.document.execCommand(textCommand, false, this.value);
 
+
         };
 
       }
 
     }
+
 
   };
 

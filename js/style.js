@@ -26,6 +26,7 @@ function execViewSourceCommand(element, textIframeEditable, displayCode) {
   if (!displayCode) {
     textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent = textIframeEditable.contentDocument.getElementsByTagName('body')[0].innerHTML;
     displayCode = true;
+
   } else {
     textIframeEditable.contentDocument.getElementsByTagName('body')[0].innerHTML = textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent;
     displayCode = false;
@@ -39,3 +40,15 @@ function isThisElement(textElements, val) {
   return textElements.command.indexOf(val) !== -1;
 
 }
+
+// function syntaxHighlight() {
+
+//   var ca = document.getElementsByTagName("code");
+//   for (var i = 0; i < ca.length; i++) {
+//     var data = ca[i].innerHTML;
+//     data = data.replace(/"(.*?)"/g, '<span class="code-str">&quot;$1&quot;</span>');
+//     data = data.replace(/&lt;(.*?)&gt;/g, '<span class="code-elem">&lt;$1&gt;</span>');
+//     data = data.replace(/\/\* (.*?) \*\//g, '<span class="code-comment">/* $1 */</span>');
+//     ca[i].innerHTML = data;
+//   }
+// }

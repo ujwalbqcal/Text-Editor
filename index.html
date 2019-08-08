@@ -7,16 +7,26 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Text Editor</title>
   <script src="script.js"></script>
+  <script src="script1.js"></script>
   <script src="style.js"></script>
 </head>
 
 <body>
   <textarea id="writeText"></textarea>
+  <button id="text">text</button>
+  <button id="code">code</button>
 
   <script>
-    textEditor.init({
-      selector: 'writeText'
-    });
+    document.getElementById('writeText').style.display = 'none';
+    text.addEventListener('click', function () {
+      textEditor.init({
+        selector: 'writeText'
+      });
+    })
+
+    code.addEventListener('click', function () {
+      codeEditor.init();
+    })
 
   </script>
 
