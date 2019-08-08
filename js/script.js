@@ -68,7 +68,7 @@ var textEditor = new (function () {
       command: 'save', type: 'button', innerHTML: '<i class="fas fa-save"></i>'
     }];
 
-    document.getElementById('code').style.display = 'none';
+    document.getElementById('buttoncontainer').style.display = 'none';
 
     var headLine = document.createElement('div');
     headLine.setAttribute('id', 'headLine');
@@ -85,13 +85,13 @@ var textEditor = new (function () {
     textContainer.style.margin = '0 15%';
     textContainer.appendChildAfter(headLine);
 
-    var codeContainer = document.createElement('div');
-    codeContainer.setAttribute('id', 'codeContainer');
+    // var codeContainer = document.createElement('div');
+    // codeContainer.setAttribute('id', 'codeContainer');
 
-    codeContainer.style.width = '45%';
-    // textContainer.style.height = '50%';
-    codeContainer.style.margin = '0 15%';
-    codeContainer.appendChildAfter(headLine);
+    // codeContainer.style.width = '45%';
+    // // textContainer.style.height = '50%';
+    // codeContainer.style.margin = '0 15%';
+    // codeContainer.appendChildAfter(headLine);
 
     var textIframeEditable = document.createElement('iframe');
     textIframeEditable.setAttribute('id', 'textIframe');
@@ -113,25 +113,25 @@ var textEditor = new (function () {
     input.style.margin = '5px 0';
     saveContainer.appendChild(input);
 
-    var codeButton = document.createElement('button');
-    codeButton.setAttribute('id', codeButton);
-    codeButton.innerHTML = ' CodeEditor'
-    codeButton.appendChildAfter(saveContainer);
+    // var codeButton = document.createElement('button');
+    // codeButton.setAttribute('id', codeButton);
+    // codeButton.innerHTML = ' CodeEditor'
+    // codeButton.appendChildAfter(saveContainer);
 
-    var codeTag = document.createElement('code');
-    codeTag.setAttribute('id', 'codeTag');
-    codeTag.innerHTML = '&lt;script&gt';
-    codeContainer.appendChild(codeTag);
+    // var codeTag = document.createElement('code');
+    // codeTag.setAttribute('id', 'codeTag');
+    // codeTag.innerHTML = '&lt;script&gt';
+    // codeContainer.appendChild(codeTag);
 
     document.getElementById(args.selector).style.display = 'none';
-    codeContainer.style.display = 'none';
+    // codeContainer.style.display = 'none';
     textIframeEditable.contentDocument.designMode = 'on';
 
-    codeButton.addEventListener('click', function () {
-      textContainer.style.display = 'none';
-      codeContainer.style.display = 'block';
-      // syntaxHighlight();
-    })
+    // codeButton.addEventListener('click', function () {
+    //   textContainer.style.display = 'none';
+    //   codeContainer.style.display = 'block';
+    //   // syntaxHighlight();
+    // })
 
 
 

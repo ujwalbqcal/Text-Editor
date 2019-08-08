@@ -6,15 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Text Editor</title>
-  <script src="./js/script.js"></script>
-  <script src="./js/script1.js"></script>
-  <script src="./js/style.js"></script>
+  <link rel="stylesheet" href="./css/style.css">
+
 </head>
 
 <body>
   <textarea id="writeText"></textarea>
-  <button id="text">text</button>
-  <button id="code">code</button>
+  <div id='buttoncontainer'>
+    <!-- Select An Editor -->
+    <button id="text">text</button>
+    <button id="code">code</button>
+  </div>
+
 
   <script>
     document.getElementById('writeText').style.display = 'none';
@@ -29,7 +32,9 @@
     })
 
   </script>
-
+  <script src="./js/script.js"></script>
+  <script src="./js/script1.js"></script>
+  <script src="./js/style.js"></script>
 </body>
 
 </html>
