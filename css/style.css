@@ -27,3 +27,13 @@ span {
   /* background: transparent;  */
   background-color: cadetblue;
 }
+
+#columnNumber{
+  left:45%; 
+  top:3px; 
+  position:absolute; 
+  font-size: 15px;
+  color:black; 
+  text-align: right;
+}
+
