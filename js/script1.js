@@ -70,17 +70,89 @@ var codeEditor = new (function () {
 
       };
 
+      charSettings = {
+
+        keyMap: [
+          { open: "\"", close: "\"", canBreak: false },
+          { open: "\'", close: "\'", canBreak: false },
+          { open: "(", close: ")", canBreak: false },
+          { open: "[", close: "]", canBreak: true },
+          { open: "{", close: "}", canBreak: true }
+        ]
+
+      }
+
       var typeaheadKeys = Object.keys(classMapping).filter(key => classMapping[key] === 'keyword');
       var editor = document.getElementById('codeEditor');
-      var currentWord = '';
-
+      var autoBrace = true;
 
       editor.addEventListener('keyup', function (e) {
         generateOutput();
         newLine();
+      });
+
+
+      editor.addEventListener('keypress', function (event) {
+        if (event.Handled)
+          return;
+        filter();
+        event.Handled = true;
 
       });
 
+      function filter() {
+
+        var theCode = event.which || event.keyCode;
+
+        if (theCode == 39 || theCode == 40 && event.which === 0) { return; }
+
+        var _char = String.fromCharCode(theCode);
+        var i;
+
+        for (i = 0; i < charSettings.keyMap.length; i++) {
+
+          if (charSettings.keyMap[i].open == _char && autoBrace) {
+            getBraces(charSettings.keyMap[i], event);
+
+          }
+        }
+
+      }
+
+
+      function getBraces(_char, e) {
+        preventDefaultEvent(e);
+
+        var pos = getCursorPosition();
+        var val = valueGet();
+        var left = val.substring(0, pos),
+          right = val.substring(pos);
+        var edited = left + _char.open + _char.close + right;
+
+        editor.value = edited;
+      }
+
+
+      function preventDefaultEvent(e) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        } else {
+          e.returnValue = false;
+        }
+      }
+
+      function getCursorPosition() {
+
+        if (typeof document.createElement('textarea').selectionStart === "number") {
+          return editor.selectionStart;
+
+        }
+      }
+
+      function valueGet() {
+        return editor.value.replace(/\r/g, '');
+
+      }
 
       function newLine() {
 
@@ -130,28 +202,6 @@ var codeEditor = new (function () {
           var writeContainer = document.createElement('div');
           writeContainer.setAttribute('id', 'writeContainer');
           writeContainer.style.paddingLeft = '6px';
-
-          // count rows number           
-          // var divHeight = count * 10;
-          // console.log(divHeight);
-
-          // var lineHeight = 10;
-          // var linee = divHeight / lineHeight;
-          // console.log(linee);
-
-          // if (linee <= 1) {
-          //   linee = 1;
-          // }
-
-          // for (i = 0; i < linee + 1; i++) {
-          //   numeri += i + 1;
-          //   nmr.push(numeri);
-          // }
-
-          // writeContainer.innerHTML = nmr[nmr.length - 2];
-
-
-
 
           // Regex to get words separated by spaces other than those in quotation marks
           var words = text.match(/(\".*?\"|\'.*?\'|[^\s]+)+(?=\s*|\s*$)/g) || [""];
