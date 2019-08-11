@@ -44,8 +44,8 @@ var codeEditor = new (function () {
     ul.setAttribute('id', 'popover');
     ul.setAttribute('class', 'typeahead');
     ul.style.position = 'absolute';
-    ul.style.bottom = '0';
-    ul.style.left = '0';
+    ul.style.bottom = '30px';
+    ul.style.left = '0px';
     codeTitle.appendChild(ul);
 
 
@@ -85,8 +85,12 @@ var codeEditor = new (function () {
       var typeaheadKeys = Object.keys(classMapping).filter(key => classMapping[key] === 'keyword');
       var editor = document.getElementById('codeEditor');
       var autoBrace = true;
+      var currentWord = '';
 
       editor.addEventListener('keyup', function (e) {
+        currentWord = handleKeyPress(currentWord, e);
+        var matches = checkTypeAhead(currentWord);
+        generateTypeahead(matches);
         generateOutput();
         newLine();
       });
@@ -153,6 +157,7 @@ var codeEditor = new (function () {
         return editor.value.replace(/\r/g, '');
 
       }
+
 
       function newLine() {
 
@@ -255,6 +260,81 @@ var codeEditor = new (function () {
         var matches = typeaheadKeys.filter(key => key.startsWith(currentWord));
 
         return matches;
+
+      }
+
+      // Create the typeahead options in the HTML
+      function generateTypeahead(matches) {
+        var popover = document.getElementById('popover');
+        while (popover.firstChild) {
+          popover.removeChild(popover.firstChild);
+        }
+
+        if (matches.length == 0) return;
+
+        matches.map(match => {
+
+          var option = document.createElement('li');
+          option.style.listStyle = 'none';
+
+          option.addEventListener('click', (e) => {
+            var choosen = e.target.innerHTML;
+            var remainingText = choosen.slice(currentWord.length);
+            var caretPosition = editor.selectionStart;
+            var editorText = editor.value;
+            editor.value = editorText.substring(0, caretPosition) + remainingText + editorText.substring(caretPosition);
+            generateOutput();
+            while (popover.firstChild) {
+              popover.removeChild(popover.firstChild);
+            }
+
+          });
+
+          option.innerHTML = match;
+          popover.appendChild(option);
+        });
+      }
+
+      function handleKeyPress(currentWord, e) {
+        var keycode = e.which || e.keyCode;
+        var character = e.key;
+        var isPrintable = isPrintableKeycode(keycode);
+        var cursorPosition = editor.selectionStart;
+        // var cursorPositionLength = editor.selectionEnd - editor.selectionStart;
+        switch (keycode) {
+          case 13:
+          case 32:
+            // Space or newline was pressed, reset currentWord
+            currentWord = '';
+            break;
+          case 8:
+            // Backspace was pressed so remove the character
+            if (cursorPosition === 0) {
+              currentWord = '';
+              break;
+            }
+
+            currentWord = currentWord.slice(0, currentWord.length - 1);
+            break;
+          default:
+            if (isPrintable) {
+              currentWord += character;
+            }
+            break;
+        }
+        return currentWord;
+      }
+
+      function isPrintableKeycode(keycode) {
+        var isPrintable =
+          (keycode > 47 && keycode < 58) || // number keys
+          keycode == 32 || keycode == 13 || // spacebar & return key(s)
+          (keycode > 64 && keycode < 91) || // letter keys
+          (keycode > 95 && keycode < 112) || // numpad keys
+          (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+          (keycode > 218 && keycode < 223);   // [\]' (in order)
+
+        return isPrintable;
       }
 
     });

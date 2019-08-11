@@ -140,17 +140,18 @@ var textEditor = new (function () {
       var file = document.getElementById('inputFile').files[0];
       var fileReader = new FileReader();
 
-      if (file.type == 'text/plain') {
+      if (file.type == 'text/html') {
         fileReader.onload = function (e) {
+
           var text = e.target.result;
-          textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent = text;
+          textIframeEditable.contentDocument.getElementsByTagName('body')[0].innerHTML = text;
         }
         fileReader.readAsText(file, "UTF-8");
 
       }
 
       else {
-        alert('Please select Text file !');
+        alert('Please select HTML file !');
       }
     };
 
@@ -173,18 +174,18 @@ var textEditor = new (function () {
 
           if (commandId == 'save') {
 
-            var saveText = textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent;
+            // var saveText = textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent;
+            var saveText = textIframeEditable.contentDocument.getElementsByTagName('body')[0].innerHTML;
 
             var byteArray = new Uint8Array(saveText.length);
             for (var x = 0; x < byteArray.length; x++) {
-              // byteArray[x] = byteArray[x].replace(/\n/g, "\r\n"); // To retain the Line breaks.
 
               byteArray[x] = saveText.charCodeAt(x);
             }
             // saveText = saveText.replace(/\n/g, "\r\n");
             // var blob = new Blob([saveText], { type: "text/html" });
 
-            var blob = new Blob([byteArray], { type: "text/plain ; charset=utf-8" });
+            var blob = new Blob([byteArray], { type: "text/html", endings: "native" });
             var fileName = "Enter FileName";
             var link = document.createElement('a');
             link.download = fileName;
