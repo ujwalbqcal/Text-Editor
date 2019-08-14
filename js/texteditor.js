@@ -81,7 +81,6 @@ var textEditor = new (function () {
     textContainer.setAttribute('id', 'textContainer');
 
     textContainer.style.width = '45%';
-    // textContainer.style.height = '50%';
     textContainer.style.margin = '0 15%';
     textContainer.appendChildAfter(headLine);
 
@@ -113,27 +112,10 @@ var textEditor = new (function () {
     input.style.margin = '5px 0';
     saveContainer.appendChild(input);
 
-    // var codeButton = document.createElement('button');
-    // codeButton.setAttribute('id', codeButton);
-    // codeButton.innerHTML = ' CodeEditor'
-    // codeButton.appendChildAfter(saveContainer);
-
-    // var codeTag = document.createElement('code');
-    // codeTag.setAttribute('id', 'codeTag');
-    // codeTag.innerHTML = '&lt;script&gt';
-    // codeContainer.appendChild(codeTag);
 
     document.getElementById(args.selector).style.display = 'none';
     // codeContainer.style.display = 'none';
     textIframeEditable.contentDocument.designMode = 'on';
-
-    // codeButton.addEventListener('click', function () {
-    //   textContainer.style.display = 'none';
-    //   codeContainer.style.display = 'block';
-    //   // syntaxHighlight();
-    // })
-
-
 
     //upload file in dom
     inputFile.onchange = function () {
@@ -174,7 +156,6 @@ var textEditor = new (function () {
 
           if (commandId == 'save') {
 
-            // var saveText = textIframeEditable.contentDocument.getElementsByTagName('body')[0].textContent;
             var saveText = textIframeEditable.contentDocument.getElementsByTagName('body')[0].innerHTML;
 
             var byteArray = new Uint8Array(saveText.length);
@@ -201,7 +182,6 @@ var textEditor = new (function () {
               saveElements.appendChild(link);
             }
             link.click();
-            // }
 
             function destroy(event) {
               saveElements.removeChild(event.target);
@@ -239,6 +219,7 @@ var textEditor = new (function () {
         element.appendChildBefore(textIframeEditable);
 
       }
+
       element.innerHTML = textElements[el].innerHTML;
       element.style.margin = '5px 2px';
 

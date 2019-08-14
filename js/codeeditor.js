@@ -21,7 +21,6 @@ var codeEditor = new (function () {
     input.setAttribute('id', 'inputFile');
     input.setAttribute('type', 'file');
     input.style.marginLeft = ' 34% ';
-    // input.style.height = '10px';
     topDiv.appendChild(input);
 
     var save = document.createElement("button");
@@ -66,8 +65,11 @@ var codeEditor = new (function () {
     ul.style.left = '0px';
     codeTitle.appendChild(ul);
 
-    // <input type="file" id="filepicker" name="fileList" webkitdirectory multiple />
-    //   <ul id="listing"></ul>
+    var fontcolor = document.createElement('input');
+    fontcolor.setAttribute('id', 'fontcolor');
+    fontcolor.setAttribute('type', 'color');
+    fontcolor.setAttribute('value', '#ff0000');
+    topDiv.appendChild(fontcolor);
 
     // var fileinput = document.createElement('input');
     // fileinput.setAttribute('type', 'file');
@@ -97,6 +99,21 @@ var codeEditor = new (function () {
         'case': 'keyword',
         'default': 'keyword',
         'break': 'keyword',
+        'catch': 'keyword',
+        'continue': 'keyword',
+        'debugger': 'keyword',
+        'delete': 'keyword',
+        'do': 'keyword',
+        'finally': 'keyword',
+        'in': 'keyword',
+        'new': 'keyword',
+        'return': 'keyword',
+        'this': 'keyword',
+        'throw': 'keyword',
+        'try': 'keyword',
+        'typeof': 'keyword',
+        'void': 'keyword',
+        'charAt': 'keyword',
         'string': 'string',
         'number': 'number'
 
@@ -115,15 +132,15 @@ var codeEditor = new (function () {
       }
 
       var typeaheadKeys = Object.keys(classMapping).filter(key => classMapping[key] === 'keyword');
+      var typeaheadKeyMethod = Object.keys(classMapping).filter(key => classMapping[key] === 'method');
+
       var editor = document.getElementById('codeEditor');
-      var autoBrace = true;
       var currentWord = '';
 
       editor.addEventListener('keyup', function (e) {
         generateOutput();
         newLine();
       });
-
 
       editor.addEventListener('keypress', function (event) {
         if (event.Handled)
@@ -134,16 +151,32 @@ var codeEditor = new (function () {
         event.Handled = true;
 
       });
+
       editor.addEventListener('keydown', function (event) {
         if (event.Handled)
           return;
         currentWord = handleKeyPress(currentWord, event);
         var matches = checkTypeAhead(currentWord);
+        // var matchMethod = checkTypeAheadMethod(currentWord);
         generateTypeahead(matches);
+        // generateTypeahead(matchMethod);
         event.Handled = true;
 
       });
 
+      // fontColor.addEventListener("input", function (e) {
+
+      //   colorValue = fontcolor.value.trim();
+      //   console.log(colorValue);
+
+      //   if (colorValue) {
+      //     fontColor.dataset.state = 'valid';
+
+      //   }
+      //   else {
+      //     fontColor.dataset.state = 'invalid';
+      //   }
+      // })
 
       //upload file in dom
       inputFile.onchange = function () {
@@ -159,16 +192,13 @@ var codeEditor = new (function () {
           }
           fileReader.readAsBinaryString(file, "UTF-8");
 
-
         }
-
         else {
           alert('Please select JS file !');
         }
       };
 
       //save file using URL
-
       saveFile.onclick = function () {
 
         var output = document.getElementById('codeOutput');
@@ -179,8 +209,6 @@ var codeEditor = new (function () {
 
           byteArray[x] = saveText.charCodeAt(x);
         }
-        // saveText = saveText.replace("/\n/g", "\r\n");
-        // var blob = new Blob([saveText], { type: "text/html" });
 
         var blob = new Blob([byteArray], { type: "text/javascript", endings: "native" });
         var fileName = "Enter FileName";
@@ -206,189 +234,7 @@ var codeEditor = new (function () {
 
       }
 
-
-      function filter() {
-
-        var theCode = event.which || event.keyCode;
-
-        if (theCode == 39 || theCode == 40 && event.which === 0) { return; }
-
-        var _char = String.fromCharCode(theCode);
-
-
-
-        for (i = 0; i < charSettings.keyMap.length; i++) {
-          // if (charSettings.keyMap[i].close == _char) {
-          //   var didClose = closedChar(charSettings.keyMap[i], event);
-
-          //   if (!didClose && charSettings.keyMap[i].open == _char && autoBrace) {
-          //     getBraces(charSettings.keyMap[i], event);
-          //   }
-          // } else if (charSettings.keyMap[i].open == _char && autoBrace) {
-          //   getBraces(charSettings.keyMap[i], event);
-          // }
-
-          if (charSettings.keyMap[i].open == _char && autoBrace) {
-            getBraces(charSettings.keyMap[i], event);
-
-          }
-        }
-      }
-      // function closedChar(_char, e) {
-      //   var pos = getCursorPosition(),
-      //     val = valueGet(),
-      //     toOverwrite = val.substring(pos, pos + 1);
-      //   if (toOverwrite == _char.close) {
-      //     preventDefaultEvent(e);
-      //     // utils._callHook('closeChar:before');
-      //     set(getCursorPosition() + 1);
-      //     // utils._callHook('closeChar:after');
-      //     return true;
-      //   }
-      //   return false;
-      // }
-
-      function enterKey(event) {
-        var theCode = event.which || event.keyCode;
-
-        if (theCode == 13) {
-          // debugger
-          preventDefaultEvent(event);
-
-          var pos = getCursorPosition(),
-            val = valueGet(),
-            left = val.substring(0, pos),
-            right = val.substring(pos),
-            leftChar = left.charAt(left.length - 1),
-            rightChar = right.charAt(0),
-            ourIndent = "",
-            closingBreak = "",
-            newLine = "\n",
-            tab = "\t",
-            finalCursorPos,
-            i;
-
-
-          ourIndent = ourIndent;
-          finalCursorPos = ourIndent.length + 1;
-          for (i = 0; i < charSettings.keyMap.length; i++) {
-            if (charSettings.keyMap[i].open == leftChar && charSettings.keyMap[i].close == rightChar) {
-              closingBreak = newLine;
-            }
-          }
-
-          var edited = left + newLine + ourIndent + closingBreak + (ourIndent.substring(0, ourIndent.length - tab.length)) + right;
-          editor.value = edited;
-          setCursor(pos + finalCursorPos);
-
-
-          // var cursorPosition = editor.selectionStart;
-          // console.log(cursorPosition);
-
-          // var cursorEndPosition = editor.selectionEnd;
-
-          // var editorText = editor.value;
-
-          // cursorPosition = editorText.substring(0, cursorPosition) + "\t" + editorText.substring(cursorEndPosition);
-          // console.log(cursorPosition.value);
-          // setCursor(cursorPosition, finalCursorPos);
-          // var pos = getCursorPosition();
-          // var editorText = editor.value;
-          // editor.value = editorText.substring(0, cursorPosition) + "\t" + editorText.substring(cursorEndPosition);
-
-        }
-
-      }
-
-      function setCursor(start, end) {
-        if (!end) {
-          end = start;
-        }
-        if (editor.setSelectionRange) {
-          editor.focus();
-          editor.setSelectionRange(start, end);
-        }
-        // else if (editor.createTextRange) {
-        //   var range = editor.createTextRange();
-        //   range.collapse(true);
-        //   range.moveEnd('character', end);
-        //   range.moveStart('character', start);
-        //   range.select();
-        // }
-      }
-
-
-      function getBraces(_char, e) {
-        preventDefaultEvent(e);
-
-        var pos = getCursorPosition();
-        var val = valueGet();
-        var left = val.substring(0, pos),
-          right = val.substring(pos);
-        var edited = left + _char.open + _char.close + right;
-
-        editor.value = edited;
-        setCursor(pos + 1);
-      }
-
-
-      function preventDefaultEvent(e) {
-        if (e.preventDefault) {
-          e.preventDefault();
-        } else {
-          e.returnValue = false;
-        }
-      }
-
-      function getCursorPosition() {
-
-        if (typeof document.createElement('textarea').selectionStart === "number") {
-          return editor.selectionStart;
-
-        }
-      }
-
-      function valueGet() {
-        return editor.value.replace(/\r/g, '');
-
-      }
-
-
-
-
-      function newLine() {
-
-        var editor = document.getElementById('codeEditor');
-        var numOutput = document.getElementById('columnNumber');
-
-        var inserted = editor.value;
-
-        while (numOutput.firstChild) {
-          numOutput.removeChild(numOutput.firstChild);
-        }
-
-        if (inserted !== "") {
-
-          var newLines = editor.value.split(/\n/);
-
-          for (var index = 0; index < newLines.length; index++) {
-
-            var tempNewLineNumber = createNewLineNumber(index);
-            numOutput.appendChild(tempNewLineNumber);
-          }
-        }
-
-      }
-
-      function createNewLineNumber(index) {
-        var numNode = document.createElement("div");
-        numNode.className = "textarealinenumber";
-        numNode.style.height = '18px';
-        numNode.textContent = index + 1;
-        return numNode;
-      }
-
-
+      //show output of textarea 
       function generateOutput() {
         var editor = document.getElementById('codeEditor');
         var output = document.getElementById('codeOutput');
@@ -410,6 +256,9 @@ var codeEditor = new (function () {
           var words = text.match(/(\".*?\"|\'.*?\'|[^\s]+)+(?=\s*|\s*$)/g) || [""];
 
           for (let word of words) {
+            if (word == 'fontColor') {
+
+            }
             if (word === '' && words.length === 1) {
               var blankLine = document.createElement('br');
               writeContainer.appendChild(blankLine);
@@ -432,6 +281,8 @@ var codeEditor = new (function () {
 
               if (classMapping[word]) {
                 content.setAttribute('class', classMapping[word]);
+                // content.style.color = colorValue;
+
               } else if (word.indexOf('\'') != -1 || word.indexOf('"') != -1) {
                 content.setAttribute('class', classMapping['string']);
 
@@ -461,7 +312,7 @@ var codeEditor = new (function () {
 
       }
 
-      // Create the typeahead options in the HTML
+      // Create the typeahead options in list in the HTML
       function generateTypeahead(matches) {
         var popover = document.getElementById('popover');
         while (popover.firstChild) {
@@ -493,8 +344,106 @@ var codeEditor = new (function () {
         });
       }
 
+      function filter() {
+        var theCode = event.which || event.keyCode;
+
+        if (theCode == 39 || theCode == 40 && event.which === 0) { return; }
+
+        var _char = String.fromCharCode(theCode);
+
+        for (i = 0; i < charSettings.keyMap.length; i++) {
+          // if (charSettings.keyMap[i].close == _char) {
+          //   var didClose = closedChar(charSettings.keyMap[i], event);
+
+          //   if (!didClose && charSettings.keyMap[i].open == _char && autoBrace) {
+          //     getBraces(charSettings.keyMap[i], event);
+          //   }
+          // } else if (charSettings.keyMap[i].open == _char && autoBrace) {
+          //   getBraces(charSettings.keyMap[i], event);
+          // }
+
+          if (charSettings.keyMap[i].open == _char && autoBrace) {
+            getBraces(charSettings.keyMap[i], event);
+
+          }
+        }
+      }
+
+      // To autopair braces
+      function getBraces(_char, e) {
+        preventDefaultEvent(e);
+
+        var pos = getCursorPosition();
+        var val = valueGet();
+        var left = val.substring(0, pos),
+          right = val.substring(pos);
+        var edited = left + _char.open + _char.close + right;
+
+        editor.value = edited;
+        setCursor(pos + 1);
+      }
+
+      function setCursor(start, end) {
+        if (!end) {
+          end = start;
+        }
+        if (editor.setSelectionRange) {
+          editor.focus();
+          editor.setSelectionRange(start, end);
+        }
+
+      }
+
+      function getCursorPosition() {
+
+        if (typeof document.createElement('textarea').selectionStart === "number") {
+          return editor.selectionStart;
+
+        }
+      }
+
+      function valueGet() {
+        return editor.value.replace(/\r/g, '');
+
+      }
+
+      //Move one line down when hit enter key between braces
+      function enterKey(event) {
+        var theCode = event.which || event.keyCode;
+
+        if (theCode == 13) {
+          preventDefaultEvent(event);
+
+          var pos = getCursorPosition(),
+            val = valueGet(),
+            left = val.substring(0, pos),
+            right = val.substring(pos),
+            leftChar = left.charAt(left.length - 1),
+            rightChar = right.charAt(0),
+            ourIndent = "",
+            closingBreak = "",
+            newLine = "\n",
+            tab = "\t",
+            finalCursorPos,
+            i;
+
+
+          ourIndent = ourIndent;
+          finalCursorPos = ourIndent.length + 1;
+          for (i = 0; i < charSettings.keyMap.length; i++) {
+            if (charSettings.keyMap[i].open == leftChar && charSettings.keyMap[i].close == rightChar) {
+              closingBreak = newLine;
+            }
+          }
+
+          var edited = left + newLine + ourIndent + closingBreak + (ourIndent.substring(0, ourIndent.length - tab.length)) + right;
+          editor.value = edited;
+          setCursor(pos + finalCursorPos);
+        }
+
+      }
+
       function handleKeyPress(currentWord, e) {
-        // debugger
         var keycode = e.which || e.keyCode;
         var character = e.key;
         var isPrintable = isPrintableKeycode(keycode);
@@ -535,36 +484,6 @@ var codeEditor = new (function () {
         }
         return currentWord;
       }
-
-      function isPrintableKeycode(keycode) {
-        var isPrintable =
-          (keycode > 47 && keycode < 58) || // number keys
-          keycode == 32 || keycode == 13 || // spacebar & return key(s)
-          (keycode > 64 && keycode < 91) || // letter keys
-          (keycode > 95 && keycode < 112) || // numpad keys
-          (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
-          (keycode > 218 && keycode < 223);   // [\]' (in order)
-
-        return isPrintable;
-      }
-
-      document.getElementById("filepicker").addEventListener("change", function (event) {
-        let output = document.getElementById("listing");
-        let files = event.target.files;
-
-        for (let i = 0; i < files.length; i++) {
-          let item = document.createElement("li");
-          item.innerHTML = files[i].webkitRelativePath;
-          item.addEventListener('click', function () {
-            var dir = item.directory;
-            console.log('dir');
-
-
-          })
-          output.appendChild(item);
-        };
-      }, false);
-
 
     });
 

@@ -10,6 +10,10 @@
   color: orange;
 }
 
+.method{
+  color:yellowgreen;
+}
+
 span {
   white-space: pre-wrap;
 }
@@ -36,4 +40,3 @@ span {
   color:black; 
   text-align: right;
 }
-
