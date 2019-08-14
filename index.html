@@ -20,6 +20,39 @@
 
 
   <script>
+    var colorSheets = [
+      {
+        color: "#ff8400",
+        title: "Switch to Orange",
+        href: "#"
+      },
+      {
+        color: "#ff463a",
+        title: "Switch to Red",
+        href: "#"
+      },
+      {
+        color: "#99ea44",
+        title: "Switch to Green",
+        href: "#"
+      },
+      {
+        color: "#79cadc",
+        title: "Switch to Blue",
+        href: "#"
+      },
+      {
+        color: "#DCDCDC",
+        title: "Switch to Grey",
+        href: ".#"
+      },
+      {
+        color: "white",
+        title: "Switch to Default",
+        href: "#"
+      },
+    ];
+
     document.getElementById('writeText').style.display = 'none';
     text.addEventListener('click', function () {
       textEditor.init({
@@ -29,6 +62,7 @@
 
     code.addEventListener('click', function () {
       codeEditor.init();
+      ColorSwitcher.init(colorSheets);
     })
 
   </script>
@@ -36,6 +70,7 @@
   <script src="./js/texteditorfunction.js"></script>
   <script src="./js/codeeditor.js"></script>
   <script src="./js/codeeditorfunction.js"></script>
+  <script src="./js/themecolor.js"></script>
 
 </body>
 

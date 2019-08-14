@@ -65,18 +65,11 @@ var codeEditor = new (function () {
     ul.style.left = '0px';
     codeTitle.appendChild(ul);
 
-    var fontcolor = document.createElement('input');
-    fontcolor.setAttribute('id', 'fontcolor');
-    fontcolor.setAttribute('type', 'color');
-    fontcolor.setAttribute('value', '#ff0000');
-    topDiv.appendChild(fontcolor);
-
-    // var fileinput = document.createElement('input');
-    // fileinput.setAttribute('type', 'file');
-    // fileinput.setAttribute('id', 'filepicker');
-    // fileinput.setAttribute('name', 'fileList');
-    // fileinput.setAttribute('webkitdirectory multiple', '');
-    // topDiv.appendChild(fileinput);
+    // var fontcolor = document.createElement('input');
+    // fontcolor.setAttribute('id', 'fontcolor');
+    // fontcolor.setAttribute('type', 'color');
+    // fontcolor.setAttribute('value', '#ff0000');
+    // topDiv.appendChild(fontcolor);
 
     var ulinput = document.createElement('ul');
     ulinput.setAttribute('id', 'listing');
@@ -136,6 +129,7 @@ var codeEditor = new (function () {
 
       var editor = document.getElementById('codeEditor');
       var currentWord = '';
+      var colorValue;
 
       editor.addEventListener('keyup', function (e) {
         generateOutput();
@@ -163,20 +157,6 @@ var codeEditor = new (function () {
         event.Handled = true;
 
       });
-
-      // fontColor.addEventListener("input", function (e) {
-
-      //   colorValue = fontcolor.value.trim();
-      //   console.log(colorValue);
-
-      //   if (colorValue) {
-      //     fontColor.dataset.state = 'valid';
-
-      //   }
-      //   else {
-      //     fontColor.dataset.state = 'invalid';
-      //   }
-      // })
 
       //upload file in dom
       inputFile.onchange = function () {
@@ -279,9 +259,18 @@ var codeEditor = new (function () {
               //not to iterate text in output
               var text = (!hasEndingCharacter) ? word + ' ' : word;
 
+              // var fontcolor = document.getElementById('fontcolor');
+              // fontcolor.addEventListener("input", function (e) {
+
+              //   colorValue = fontcolor.value.trim();
+              //   console.log(colorValue);
+
+              // })
+
               if (classMapping[word]) {
                 content.setAttribute('class', classMapping[word]);
-                // content.style.color = colorValue;
+
+                content.style.color = colorValue;
 
               } else if (word.indexOf('\'') != -1 || word.indexOf('"') != -1) {
                 content.setAttribute('class', classMapping['string']);
