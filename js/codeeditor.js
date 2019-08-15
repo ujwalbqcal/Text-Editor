@@ -39,6 +39,7 @@ var codeEditor = new (function () {
 
     var editor = document.createElement('textarea');
     editor.setAttribute('id', 'codeEditor');
+    editor.setAttribute('placeholder', 'Write Here');
     editor.style.width = '500px';
     editor.style.height = '500px';
     editor.style.border = '2px solid #34c70e';
@@ -76,8 +77,7 @@ var codeEditor = new (function () {
     topDiv.appendChild(ulinput);
 
 
-    document.addEventListener('click', function () {
-
+    window.addEventListener('click', function () {
       var classMapping = {
         'var': 'keyword',
         'const': 'keyword',
@@ -107,8 +107,25 @@ var codeEditor = new (function () {
         'typeof': 'keyword',
         'void': 'keyword',
         'charAt': 'keyword',
+        'backgroundColor': 'keyword',
+        'color': 'keyword',
+        'fontSize': 'keyword',
+        'text-align': 'keyword',
+        'letter-sapcing': 'keyword',
+        'word-spacing': 'keyword',
         'string': 'string',
         'number': 'number'
+
+      };
+
+      var operators = {
+        '+': 'operator',
+        '-': 'operator',
+        '*': 'operator',
+        '/': 'operator',
+        '.': 'operator',
+        '%': 'operator',
+        '=': 'operator'
 
       };
 
@@ -132,8 +149,12 @@ var codeEditor = new (function () {
       var colorValue;
 
       editor.addEventListener('keyup', function (e) {
+        if (e.Handled)
+          return;
+
         generateOutput();
         newLine();
+        e.Handled = true;
       });
 
       editor.addEventListener('keypress', function (event) {
@@ -149,11 +170,10 @@ var codeEditor = new (function () {
       editor.addEventListener('keydown', function (event) {
         if (event.Handled)
           return;
+
         currentWord = handleKeyPress(currentWord, event);
         var matches = checkTypeAhead(currentWord);
-        // var matchMethod = checkTypeAheadMethod(currentWord);
         generateTypeahead(matches);
-        // generateTypeahead(matchMethod);
         event.Handled = true;
 
       });
@@ -234,7 +254,35 @@ var codeEditor = new (function () {
 
           // Regex to get words separated by spaces other than those in quotation marks
           var words = text.match(/(\".*?\"|\'.*?\'|[^\s]+)+(?=\s*|\s*$)/g) || [""];
+
+          var background = words[0].split(/\b(backgroundColor:)\b/g);
+          var bgColor = background[2];
+          output.style.backgroundColor = bgColor;
+
+          var font = words[0].split(/\b(color:)\b/g);
+          var fontColor = font[2];
+          output.style.color = fontColor;
+
+          var fontSize = words[0].split(/\b(fontSize:)\b/g);
+          var textSize = fontSize[2];
+          output.style.fontSize = textSize + 'px';
+
+          var fontAlign = words[0].split(/\b(text-align:)\b/g);
+          var wordAlign = fontAlign[2];
+          output.style.textAlign = wordAlign;
+
+          var fontSpace = words[0].split(/\b(letter-spacing:)\b/g);
+          var letterSpace = fontSpace[2];
+          output.style.letterSpacing = letterSpace + 'px';
+
+          var wordSpace = words[0].split(/\b(word-spacing:)\b/g);
+          var fontSpace = wordSpace[2];
+          output.style.wordSpacing = fontSpace + 'px';
+
           for (var word of words) {
+
+            // var keyColor = words[0].split(/\b(keyColor)\b:/g);
+            // var keywordColor = keyColor[2];
 
             if (word === '' && words.length === 1) {
               var blankLine = document.createElement('br');
@@ -256,24 +304,17 @@ var codeEditor = new (function () {
               //not to iterate text in output
               var text = (!hasEndingCharacter) ? word + ' ' : word;
 
-              // var fontcolor = document.getElementById('fontcolor');
-              // fontcolor.addEventListener("input", function (e) {
-
-              //   colorValue = fontcolor.value.trim();
-              //   console.log(colorValue);
-
-              // })
-
               if (classMapping[word]) {
                 content.setAttribute('class', classMapping[word]);
-
-                content.style.color = colorValue;
+                // console.log(keywordColor);
 
               } else if (word.indexOf('\'') != -1 || word.indexOf('"') != -1) {
                 content.setAttribute('class', classMapping['string']);
 
               } else if (!isNaN(word)) {
                 content.setAttribute('class', classMapping['number']);
+              } else if (operators[word]) {
+                content.setAttribute('class', 'operator');
               }
 
               content.innerHTML = text;
@@ -284,9 +325,11 @@ var codeEditor = new (function () {
                 content.innerHTML = endingCharacter + ' ';
                 writeContainer.appendChild(content);
               }
+
             }
           }
           output.appendChild(writeContainer);
+
         }
       }
 

@@ -3,13 +3,15 @@
 }
 
 .string {
-  color: #bcbc25;
+  color: magenta;
 }
 
 .number {
-  color: orange;
+  color: darkorange;
 }
-
+.operator{
+  color: darkviolet;
+}
 .method{
   color:yellowgreen;
 }
