@@ -234,11 +234,8 @@ var codeEditor = new (function () {
 
           // Regex to get words separated by spaces other than those in quotation marks
           var words = text.match(/(\".*?\"|\'.*?\'|[^\s]+)+(?=\s*|\s*$)/g) || [""];
+          for (var word of words) {
 
-          for (let word of words) {
-            if (word == 'fontColor') {
-
-            }
             if (word === '' && words.length === 1) {
               var blankLine = document.createElement('br');
               writeContainer.appendChild(blankLine);
