@@ -63,7 +63,7 @@ var codeEditor = new (function () {
     ul.setAttribute('class', 'typeahead');
     ul.style.position = 'absolute';
     ul.style.bottom = '30px';
-    ul.style.left = '0px';
+    ul.style.left = '-115px';
     codeTitle.appendChild(ul);
 
     // var fontcolor = document.createElement('input');
