@@ -41,7 +41,8 @@ var codeEditor = new (function () {
     editor.setAttribute('id', 'codeEditor');
     editor.setAttribute('placeholder', 'Write Here');
     editor.style.width = '500px';
-    editor.style.height = '500px';
+    editor.style.minHeight = '600px';
+    editor.style.overflow = 'auto';
     editor.style.border = '2px solid #34c70e';
     editor.style.marginRight = '55px';
     codeTitle.appendChild(editor);
@@ -51,7 +52,8 @@ var codeEditor = new (function () {
     codeOutput.innerHTML = 'Preview Here';
     codeOutput.style.border = '2px solid #34c70e';
     codeOutput.style.width = '500px';
-    codeOutput.style.height = '500px';
+    // codeOutput.style.height = '600px';
+    codeOutput.style.overflow = 'auto';
     codeTitle.appendChild(codeOutput);
 
     var lineNumber = document.createElement('div');
