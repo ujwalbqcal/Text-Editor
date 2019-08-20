@@ -20,38 +20,6 @@
 
 
   <script>
-    var colorSheets = [
-      {
-        color: "#FFFACD",
-        title: "Switch to LemonCiffon",
-        href: "#",
-      },
-      {
-        color: "#FA8072",
-        title: "Switch to Salmon",
-        href: "#"
-      },
-      {
-        color: "#99ea44",
-        title: "Switch to LightGreen",
-        href: "#"
-      },
-      {
-        color: "#79cadc",
-        title: "Switch to LightBlue",
-        href: "#"
-      },
-      {
-        color: "#DCDCDC",
-        title: "Switch to Grey",
-        href: ".#"
-      },
-      {
-        color: "white",
-        title: "Switch to Default",
-        href: "#"
-      },
-    ];
 
     document.getElementById('writeText').style.display = 'none';
     text.addEventListener('click', function () {
@@ -62,7 +30,7 @@
 
     code.addEventListener('click', function () {
       codeEditor.init();
-      ColorSwitcher.init(colorSheets);
+      ColorSwitcher.init();
     })
 
   </script>

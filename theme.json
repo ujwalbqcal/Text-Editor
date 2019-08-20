@@ -1,0 +1,48 @@
+{
+  "colorSheets": [
+    {
+      "color": "#FFFACD",
+      "fontColor": "red",
+      "fontFamily": "Arial",
+      "fontSize": "15",
+      "keywordColor": "#8A2BE2",
+      "stringColor": "green",
+      "numberColor": "brown",
+      "title": "Switch to LemonCiffon",
+      "href": "#"
+    },
+    {
+      "color": "#251F1F",
+      "fontColor": "white",
+      "fontFamily": "Verdena",
+      "fontSize": "15",
+      "keywordColor": "#F4A460",
+      "stringColor": "silver",
+      "numberColor": "#DAA520",
+      "title": "Switch to Black",
+      "href": "#"
+    },
+    {
+      "color": "#DCDCDC",
+      "fontColor": "coral",
+      "fontFamily": "courier",
+      "fontSize": "15",
+      "keywordColor": "dodgerblue",
+      "stringColor": "#8A2BE2",
+      "numberColor": "#FF4500",
+      "title": "Switch to Grey",
+      "href": "#"
+    },
+    {
+      "color": "white",
+      "fontColor": "black",
+      "fontFamily": "Times New Roman",
+      "fontSize": "15",
+      "keywordColor": "dodgerblue",
+      "stringColor": "magenta",
+      "numberColor": "darkorange",
+      "title": "Switch to Default",
+      "href": "#"
+    }
+  ]
+}

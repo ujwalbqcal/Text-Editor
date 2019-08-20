@@ -64,7 +64,7 @@ var codeEditor = new (function () {
     ul.setAttribute('id', 'popover');
     ul.setAttribute('class', 'typeahead');
     ul.style.position = 'absolute';
-    ul.style.bottom = '30px';
+    ul.style.bottom = '130px';
     ul.style.left = '-115px';
     codeTitle.appendChild(ul);
 
@@ -280,6 +280,7 @@ var codeEditor = new (function () {
           var wordSpace = words[0].split(/\b(word-spacing:)\b/g);
           var fontSpace = wordSpace[2];
           output.style.wordSpacing = fontSpace + 'px';
+
 
           for (var word of words) {
 

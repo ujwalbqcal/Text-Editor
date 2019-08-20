@@ -1,19 +1,27 @@
+:root {
+  --dodger: dodgerblue;
+  --magenta:magenta;
+  --darkorange:darkorange;
+  --darkviolet:darkviolet;
+  --yellowgreen:yellowgreen;
+}
+
 .keyword {
-  color: dodgerblue;
+  color: var(--dodger);
 }
 
 .string {
-  color: magenta;
+  color: var(--magenta);
 }
 
 .number {
-  color: darkorange;
+  color: var(--darkorange);
 }
 .operator{
-  color: darkviolet;
+  color: var(--darkviolet);
 }
 .method{
-  color:yellowgreen;
+  color: var(--yellowgreen);
 }
 
 span {
